@@ -45,6 +45,8 @@ eval env ex = case ex of
     VClosure c <- eval env a
     c (\() -> eval env b)
 
+  EEffect f -> f
+
   EBool b -> return $ VBool b
   EInt n  -> return $ VInt n
   EFix e  -> eval env (EApp e (EFix e))
@@ -54,8 +56,6 @@ eval env ex = case ex of
     case primOp of
       Add -> return $ VInt $ toInt v0 + toInt v1
       Mul -> return $ VInt $ toInt v0 * toInt v1
-
-
 
 omega :: Expr
 omega = EApp (ELam "x" (EApp (EVar "x") (EVar "x")))

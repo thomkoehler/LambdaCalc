@@ -17,4 +17,4 @@ instance Show Value where
 
 toInt :: Value -> Int
 toInt (VInt i) = i
-toInt _ = error "VInt expected."
+toInt _ = error "Int expected."
