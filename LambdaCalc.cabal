@@ -1,0 +1,34 @@
+name:                LambdaCalc
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/githubuser/LambdaCalc#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Author name here
+maintainer:          example@example.com
+copyright:           2017 Author name here
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+executable LambdaCalc
+  build-tools:
+    alex,
+    happy
+    
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  
+  build-depends:       
+    base >= 4.7 && < 5,
+    array >= 0.5.2 && < 0.6
+  
+  Other-modules:       
+    LambdaCalc.Lexer, 
+    LambdaCalc.Parser,
+    LambdaCalc.Value,
+    LambdaCalc.Expr,
+    LambdaCalc.CallByNeed
