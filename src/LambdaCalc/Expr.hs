@@ -11,6 +11,7 @@ data Expr
    | EBool Bool
    | EPrim PrimOp Expr Expr
    | EFix Expr
+   | EEffect Expr
    deriving(Show)
 
 data PrimOp
