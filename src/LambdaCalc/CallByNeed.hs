@@ -1,11 +1,12 @@
 
 {-# LANGUAGE RankNTypes #-}
 
-module LambdaCalc.CallByNeed(test1) where
+module LambdaCalc.CallByNeed(eval) where
 
 import Data.IORef
 import Data.Maybe
 import Text.Printf
+import Control.Monad
 
 import LambdaCalc.Expr
 import LambdaCalc.Value
@@ -45,11 +46,10 @@ eval env ex = case ex of
     VClosure c <- eval env a
     c (\() -> eval env b)
 
-  EEffect f -> f
-
   EBool b -> return $ VBool b
   EInt n  -> return $ VInt n
   EFix e  -> eval env (EApp e (EFix e))
+
   EPrim primOp expr0 expr1 -> do
     v0 <- eval env expr0
     v1 <- eval env expr1
@@ -57,13 +57,5 @@ eval env ex = case ex of
       Add -> return $ VInt $ toInt v0 + toInt v1
       Mul -> return $ VInt $ toInt v0 * toInt v1
 
-omega :: Expr
-omega = EApp (ELam "x" (EApp (EVar "x") (EVar "x")))
-             (ELam "x" (EApp (EVar "x") (EVar "x")))
+  ELet bs expr -> undefined
 
-test1 :: IO ()
-test1 = do
-  let expr = parseExpr "(\\x -> (\\y -> x + y)) 3 4"
-  res <- eval [] expr
-  -- res <- eval [] $ EApp (ELam "y" (EInt 42)) omega
-  print res

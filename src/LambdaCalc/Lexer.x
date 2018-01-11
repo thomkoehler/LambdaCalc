@@ -22,6 +22,7 @@ tokens :-
   "->"                          { \s -> TokenArrow }
   \=                            { \s -> TokenEq }
   \\                            { \s -> TokenLambda }
+  \;                            { \s -> TokenSemicolon }
   [\+]                          { \s -> TokenAdd }
   [\-]                          { \s -> TokenSub }
   [\*]                          { \s -> TokenMul }
@@ -43,6 +44,7 @@ data Token = TokenLet
            | TokenMul
            | TokenLParen
            | TokenRParen
+           | TokenSemicolon
            deriving (Eq,Show)
 
 scanTokens = alexScanTokens

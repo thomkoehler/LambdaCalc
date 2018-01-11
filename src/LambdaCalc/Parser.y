@@ -1,5 +1,5 @@
 {
-module LambdaCalc.Parser where
+module LambdaCalc.Parser(parseExpr) where
 
 import LambdaCalc.Lexer
 import LambdaCalc.Expr
@@ -24,6 +24,7 @@ import LambdaCalc.Value
     '*'   { TokenMul }
     '('   { TokenLParen }
     ')'   { TokenRParen }
+    ';'   { TokenSemicolon }
 
 %left '+' '-'
 %left '*'
@@ -31,21 +32,30 @@ import LambdaCalc.Value
 
 Expr : '\\' VAR '->' Expr          { ELam $2 $4 }
      | Form                        { $1 }
+     | let Binds in Expr           { ELet $2 $4 }
+
+Bind : VAR '=' Expr ';'         { ($1, $3) }
+
+Binds : Bind                    {[$1]}
+      | Binds Bind              {$2 : $1}
+
 
 Form : Form '+' Form               { EPrim Add $1 $3 }
      | Form '-' Form               { EPrim Mul $1 $3 }
-     | Juxt                        { $1 }
+     | App                         { $1 }
 
-Juxt : Juxt Atom                   { EApp $1 $2 }
-     | Atom                        { $1 }
+App : App Atom                     { EApp $1 $2 }
+    | Atom                         { $1 }
 
 Atom : '(' Expr ')'                { $2 }
      | NUM                         { EInt $1 }
      | VAR                         { EVar $1 }
 
 {
+
 parseError :: [Token] -> a
-parseError _ = error "Parse error"
+parseError ts = error $ "Parse error: " ++ show ts
+
 
 parseExpr :: String -> Expr
 parseExpr = expr . scanTokens

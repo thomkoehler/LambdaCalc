@@ -1,8 +1,6 @@
 
 module LambdaCalc.Expr where
 
-import LambdaCalc.Value
-
 type Name = String
 
 data Expr
@@ -13,7 +11,7 @@ data Expr
    | EBool Bool
    | EPrim PrimOp Expr Expr
    | EFix Expr
-   | EEffect Value
+   | ELet [(Name, Expr)] Expr
    deriving(Show)
 
 data PrimOp
