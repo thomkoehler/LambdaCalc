@@ -12,9 +12,9 @@ data Expr
    | EPrim PrimOp Expr Expr
    | EFix Expr
    | ELet [(Name, Expr)] Expr
-   deriving(Show)
+   deriving(Show, Eq)
 
 data PrimOp
    = Add
    | Mul
-   deriving(Show)
+   deriving(Show, Eq)
