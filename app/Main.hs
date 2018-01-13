@@ -1,13 +1,11 @@
 
 module Main where
 
-import LambdaCalc.CallByNeed
-import LambdaCalc.Parser
-import LambdaCalc.Expr
+import LambdaCalc
 
 omega :: Expr
 omega = EApp (ELam "x" (EApp (EVar "x") (EVar "x")))
-             (ELam "x" (EApp (EVar "x") (EVar "x")))
+              (ELam "x" (EApp (EVar "x") (EVar "x")))
 
 main :: IO ()
 main = do
@@ -17,4 +15,5 @@ main = do
   val <- eval [] expr
   print val
   return ()
-
+  
+  
