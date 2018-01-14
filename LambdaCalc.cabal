@@ -54,7 +54,8 @@ test-suite LambdaCalcTest
   hs-source-dirs: test
 
   other-modules:
-    ParserTest
+    ParserTest,
+    CallByNeedTest
 
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   

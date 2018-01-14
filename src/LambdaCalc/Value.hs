@@ -14,6 +14,10 @@ instance Show Value where
    show (VBool b) = "VBool " ++  show b
    show (VClosure _) = "VClosure"
 
+instance Eq Value where
+  (VInt x) == (VInt y) = x == y
+  (VBool x) == (VBool y) = x == y
+
 
 toInt :: Value -> Int
 toInt (VInt i) = i

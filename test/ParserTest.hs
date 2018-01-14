@@ -1,7 +1,6 @@
 
 {-# LANGUAGE QuasiQuotes #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
-{-# LANGUAGE OverloadedStrings #-}
 
 module ParserTest where
 
@@ -10,6 +9,7 @@ import Text.RawString.QQ
 
 import LambdaCalc
 
+{-# ANN module ("HLint: ignore Use camelCase" :: String) #-}
 
 strSimpleLet :: String
 strSimpleLet = [r|
