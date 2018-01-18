@@ -5,6 +5,7 @@ module LambdaCalc.CallByNeed(eval) where
 
 import Data.IORef
 import Data.Maybe
+import Data.List
 import Text.Printf
 import Control.Monad
 
@@ -14,6 +15,7 @@ import LambdaCalc.Parser
 
 
 type Env = [(String, IORef Thunk)]
+
 
 update :: IORef Thunk -> Value -> IO ()
 update ref v = do
@@ -29,9 +31,9 @@ force ref = do
 
 
 mkThunk :: Env -> String -> Expr -> (Thunk -> IO Value)
-mkThunk env x body th = do
+mkThunk env name body th = do
   th' <- newIORef th
-  eval ((x, th') : env) body
+  eval ((name, th') : env) body
 
 
 eval :: Env -> Expr -> IO Value
@@ -40,7 +42,7 @@ eval env ex = case ex of
     let ref = fromMaybe (error (printf "Var %s not found." n)) $ lookup n env
     force ref
 
-  ELam x e -> return $ VClosure (mkThunk env x e)
+  ELam x e -> return $ VClosure $ mkThunk env x e
 
   EApp a b -> do
     VClosure c <- eval env a
@@ -57,5 +59,16 @@ eval env ex = case ex of
       Add -> return $ VInt $ toInt v0 + toInt v1
       Mul -> return $ VInt $ toInt v0 * toInt v1
 
-  ELet bs expr -> undefined
+  ELet bs expr -> do
+    env' <- foldM addEnvEntry env bs
+    eval env' expr
+
+  where 
+    addEnvEntry e (name, body) = do
+      bodyRef <- newIORef (\() -> eval env body)
+      return $ (name, bodyRef) : e
+    
+
+
+
 
