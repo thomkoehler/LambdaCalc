@@ -55,6 +55,7 @@ eval env ex = case ex of
     v1 <- eval env expr1
     case primOp of
       Add -> return $ VInt $ toInt v0 + toInt v1
+      Sub -> return $ VInt $ toInt v0 - toInt v1
       Mul -> return $ VInt $ toInt v0 * toInt v1
 
   EIf predExpr expr0 expr1 -> do

@@ -17,5 +17,6 @@ data Expr
 
 data PrimOp
    = Add
+   | Sub
    | Mul
    deriving(Show, Eq)

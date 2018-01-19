@@ -22,15 +22,18 @@ strLet = [r|
     x = 1 + 2;
     y = 3 + 4;
   in
-    x + y
+    x * y
 
 |]
 
 test_let :: IO ()
-test_let = testExpr strLet $ VInt 10
+test_let = testExpr strLet $ VInt 21
 
 test_then :: IO ()
-test_then = testExpr "if True then 1 else 2" $ VInt 1
+test_then = testExpr "if True then 1 + 2 else 3 + 4" $ VInt 3
+
+test_else :: IO ()
+test_else = testExpr "if False then 1 + 2 else 3 + 4" $ VInt 7
 
 
 testExpr :: String -> Value -> IO ()

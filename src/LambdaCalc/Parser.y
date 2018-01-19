@@ -47,7 +47,8 @@ Binds : Bind                             {[$1]}
 
 
 Form : Form '+' Form                     { EPrim Add $1 $3 }
-     | Form '-' Form                     { EPrim Mul $1 $3 }
+     | Form '-' Form                     { EPrim Sub $1 $3 }
+     | Form '*' Form                     { EPrim Mul $1 $3 }
      | App                               { $1 }
 
 App : App Atom                           { EApp $1 $2 }
