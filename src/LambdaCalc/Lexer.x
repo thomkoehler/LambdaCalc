@@ -25,6 +25,7 @@ tokens :-
   "->"                          { \s -> TokenArrow }
   "True"                        { \s -> TokenBool True }
   "False"                       { \s -> TokenBool False }
+  "undefined"                   { \s -> TokenUndefined }
   \=                            { \s -> TokenEq }
   \\                            { \s -> TokenLambda }
   \;                            { \s -> TokenSemicolon }
@@ -54,6 +55,7 @@ data Token = TokenLet
            | TokenLParen
            | TokenRParen
            | TokenSemicolon
+           | TokenUndefined
            deriving (Eq,Show)
 
 scanTokens = alexScanTokens

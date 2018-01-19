@@ -8,6 +8,7 @@ data Value
    | VBool Bool
    | VClosure (Thunk -> IO Value)
    | VEffect (IO Value)
+   | VUndefined
   
 instance Show Value where
    show (VInt v) = "VInt " ++ show v

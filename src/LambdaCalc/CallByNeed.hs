@@ -36,6 +36,8 @@ mkThunk env name body th = do
 
 eval :: Env -> Expr -> IO Value
 eval env ex = case ex of
+  EUndefined -> error "undefined"
+
   EVar n -> do
     let ref = fromMaybe (error (printf "Var %s not found." n)) $ lookup n env
     force ref

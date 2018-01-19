@@ -20,6 +20,7 @@ import LambdaCalc.Value
     NUM     { TokenNum $$ }
     'True'  { TokenBool True }
     'False' { TokenBool False }
+    'undefined' { TokenUndefined }
     VAR     { TokenSym $$ }
     '\\'    { TokenLambda }
     '->'    { TokenArrow }
@@ -59,6 +60,7 @@ Atom : '(' Expr ')'                      { $2 }
      | VAR                               { EVar $1 }
      | 'True'                            { EBool True }
      | 'False'                           { EBool False }
+     | 'undefined'                       { EUndefined }
     
 
 {

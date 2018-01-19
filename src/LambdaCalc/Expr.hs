@@ -9,6 +9,7 @@ data Expr
    | EApp Expr Expr
    | EInt Int
    | EBool Bool
+   | EUndefined
    | EPrim PrimOp Expr Expr
    | EFix Expr
    | ELet [(Name, Expr)] Expr

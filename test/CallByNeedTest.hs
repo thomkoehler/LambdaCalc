@@ -29,11 +29,17 @@ strLet = [r|
 test_let :: IO ()
 test_let = testExpr strLet $ VInt 21
 
+test_lazyLet :: IO ()
+test_lazyLet = testExpr "let x = 1; u = undefined; in x" $ VInt 1
+
 test_then :: IO ()
 test_then = testExpr "if True then 1 + 2 else 3 + 4" $ VInt 3
 
 test_else :: IO ()
 test_else = testExpr "if False then 1 + 2 else 3 + 4" $ VInt 7
+
+test_lazyIf :: IO ()
+test_lazyIf = testExpr "if True then 1 else undefined" $ VInt 1
 
 
 testExpr :: String -> Value -> IO ()
