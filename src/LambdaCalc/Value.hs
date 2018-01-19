@@ -22,3 +22,7 @@ instance Eq Value where
 toInt :: Value -> Int
 toInt (VInt i) = i
 toInt _ = error "Int expected."
+
+toBool :: Value -> Bool
+toBool (VBool b) = b
+toBool _ = error "Bool expected."

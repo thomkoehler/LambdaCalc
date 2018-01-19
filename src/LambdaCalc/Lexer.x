@@ -18,8 +18,13 @@ tokens :-
   "#".*                         ;
   let                           { \s -> TokenLet }
   in                            { \s -> TokenIn }
+  if                            { \s -> TokenIf }
+  then                          { \s -> TokenThen }
+  else                          { \s -> TokenElse }
   $digit+                       { \s -> TokenNum (read s) }
   "->"                          { \s -> TokenArrow }
+  "True"                        { \s -> TokenBool True }
+  "False"                       { \s -> TokenBool False }
   \=                            { \s -> TokenEq }
   \\                            { \s -> TokenLambda }
   \;                            { \s -> TokenSemicolon }
@@ -34,8 +39,12 @@ tokens :-
 
 data Token = TokenLet
            | TokenIn
+           | TokenIf
+           | TokenThen
+           | TokenElse
            | TokenLambda
            | TokenNum Int
+           | TokenBool Bool
            | TokenSym String
            | TokenArrow
            | TokenEq

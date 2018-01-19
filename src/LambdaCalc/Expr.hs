@@ -12,6 +12,7 @@ data Expr
    | EPrim PrimOp Expr Expr
    | EFix Expr
    | ELet [(Name, Expr)] Expr
+   | EIf Expr Expr Expr
    deriving(Show, Eq)
 
 data PrimOp

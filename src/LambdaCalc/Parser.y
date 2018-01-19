@@ -12,44 +12,53 @@ import LambdaCalc.Value
 %error { parseError }
 
 %token
-    let   { TokenLet }
-    in    { TokenIn }
-    NUM   { TokenNum $$ }
-    VAR   { TokenSym $$ }
-    '\\'  { TokenLambda }
-    '->'  { TokenArrow }
-    '='   { TokenEq }
-    '+'   { TokenAdd }
-    '-'   { TokenSub }
-    '*'   { TokenMul }
-    '('   { TokenLParen }
-    ')'   { TokenRParen }
-    ';'   { TokenSemicolon }
+    let     { TokenLet }
+    in      { TokenIn }
+    if      { TokenIf }
+    then    { TokenThen }
+    else    { TokenElse }
+    NUM     { TokenNum $$ }
+    'True'  { TokenBool True }
+    'False' { TokenBool False }
+    VAR     { TokenSym $$ }
+    '\\'    { TokenLambda }
+    '->'    { TokenArrow }
+    '='     { TokenEq }
+    '+'     { TokenAdd }
+    '-'     { TokenSub }
+    '*'     { TokenMul }
+    '('     { TokenLParen }
+    ')'     { TokenRParen }
+    ';'     { TokenSemicolon }
 
 %left '+' '-'
 %left '*'
 %%
 
-Expr : '\\' VAR '->' Expr          { ELam $2 $4 }
-     | Form                        { $1 }
-     | let Binds in Expr           { ELet $2 $4 }
+Expr : '\\' VAR '->' Expr                { ELam $2 $4 }
+     | Form                              { $1 }
+     | let Binds in Expr                 { ELet $2 $4 }
+     | if Expr then Expr else Expr       { EIf $2 $4 $6 }
 
-Bind : VAR '=' Expr ';'         { ($1, $3) }
+Bind : VAR '=' Expr ';'                  { ($1, $3) }
 
-Binds : Bind                    {[$1]}
-      | Binds Bind              {$2 : $1}
+Binds : Bind                             {[$1]}
+      | Binds Bind                       {$2 : $1}
 
 
-Form : Form '+' Form               { EPrim Add $1 $3 }
-     | Form '-' Form               { EPrim Mul $1 $3 }
-     | App                         { $1 }
+Form : Form '+' Form                     { EPrim Add $1 $3 }
+     | Form '-' Form                     { EPrim Mul $1 $3 }
+     | App                               { $1 }
 
-App : App Atom                     { EApp $1 $2 }
-    | Atom                         { $1 }
+App : App Atom                           { EApp $1 $2 }
+    | Atom                               { $1 }
 
-Atom : '(' Expr ')'                { $2 }
-     | NUM                         { EInt $1 }
-     | VAR                         { EVar $1 }
+Atom : '(' Expr ')'                      { $2 }
+     | NUM                               { EInt $1 }
+     | VAR                               { EVar $1 }
+     | 'True'                            { EBool True }
+     | 'False'                           { EBool False }
+    
 
 {
 

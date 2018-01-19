@@ -5,13 +5,11 @@ module LambdaCalc.CallByNeed(eval) where
 
 import Data.IORef
 import Data.Maybe
-import Data.List
 import Text.Printf
 import Control.Monad
 
 import LambdaCalc.Expr
 import LambdaCalc.Value
-import LambdaCalc.Parser
 
 
 type Env = [(String, IORef Thunk)]
@@ -59,14 +57,20 @@ eval env ex = case ex of
       Add -> return $ VInt $ toInt v0 + toInt v1
       Mul -> return $ VInt $ toInt v0 * toInt v1
 
+  EIf predExpr expr0 expr1 -> do
+    predVal <- eval env predExpr
+    if toBool predVal 
+      then eval env expr0
+      else eval env expr1
+
   ELet bs expr -> do
     env' <- foldM addEnvEntry env bs
     eval env' expr
 
   where 
     addEnvEntry e (name, body) = do
-      bodyRef <- newIORef (\() -> eval env body)
-      return $ (name, bodyRef) : e
+      bodyThunk <- newIORef (\() -> eval env body)
+      return $ (name, bodyThunk) : e
     
 
 
