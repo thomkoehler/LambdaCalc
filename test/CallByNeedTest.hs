@@ -41,6 +41,22 @@ test_else = testExpr "if False then 1 + 2 else 3 + 4" $ VInt 7
 test_lazyIf :: IO ()
 test_lazyIf = testExpr "if True then 1 else undefined" $ VInt 1
 
+test_app :: IO ()
+test_app = testExpr "(\a -> (\b -> a + b)) 2 3" $ VInt 5
+
+strLetApp :: String
+strLetApp = [r|
+
+  let
+    mul = (\a -> (\b -> a * b));
+  in
+    mul 2 3
+
+|]
+
+test_letApp :: IO ()
+test_letApp = testExpr strLetApp $ VInt 6
+
 
 testExpr :: String -> Value -> IO ()
 testExpr text expectedValue = do
